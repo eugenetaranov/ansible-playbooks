@@ -1,0 +1,30 @@
+---
+- lvg: vg=data pvs=/dev/xvdb
+
+- lvol: vg=data lv=data-0 size=100%FREE
+
+- filesystem: dev=/dev/data/data-0 fstype=ext4
+
+- mount: name=/data src=/dev/data/data-0 fstype=ext4 state=mounted opts=noatime
+
+- file: name=/data/cassandra state=directory owner=cassandra group=cassandra
+
+- copy: src=datastax.repo dest=/etc/yum.repos.d/datastax.repo
+
+- yum: name={{ item }} state=installed
+  with_items:
+    - java-1.7.0-openjdk
+    - dsc21
+    - cassandra21
+    - cassandra21-tools
+
+- template: src=cassandra.yaml dest=/etc/cassandra/conf/cassandra.yaml
+
+- file: path=/root/.cassandra state=directory
+
+- template: src=cqlshrc dest=/root/.cassandra/cqlshrc
+
+- lineinfile: dest=/etc/init.d/cassandra regexp="^\. /etc/rc.d/init.d/functions" state=absent
+
+- service: name=cassandra enabled=yes
+

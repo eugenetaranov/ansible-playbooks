@@ -1,0 +1,10 @@
+[connection]
+hostname = {{ ansible_eth0.ipv4.address }}
+port = 9042
+
+[ui]
+color = on
+completekey = tab
+
+[tracing]
+max_trace_wait = 10.0

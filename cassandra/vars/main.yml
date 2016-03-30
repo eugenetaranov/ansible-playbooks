@@ -1,0 +1,2 @@
+cluster_name: project
+sensu_subscriptions: ["system", "cassandra"]
